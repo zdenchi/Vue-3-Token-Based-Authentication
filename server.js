@@ -18,9 +18,15 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/dashboard', (req, res) => {
-  res.json({
-    events: events,
+app.get('/dashboard', verifyToken, (req, res) => {
+  jwt.verify(req.token, JWT_SECRET_KEY, (err) => {
+    if (err) {
+      res.sendStatus(401);
+    } else {
+      res.json({
+        events: events,
+      });
+    }
   });
 });
 
@@ -45,6 +51,8 @@ app.post('/register', (req, res) => {
         } else {
           const token = jwt.sign({ user }, JWT_SECRET_KEY);
           // In a production app, you'll want the secret key to be an environment variable
+
+          console.log('user registered!');
           res.json({
             token,
             email: user.email,
@@ -92,6 +100,6 @@ function verifyToken(req, res, next) {
   }
 }
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('Server started on port 3000');
 });

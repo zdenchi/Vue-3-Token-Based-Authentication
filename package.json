@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve:front": "vue-cli-service serve",
-    "serve:back": "nodemon server.js",
+    "server:dev": "nodemon server.js",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "start": "nodemon server.js & vue-cli-service serve"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.24.0",
@@ -56,5 +55,12 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "nodemonConfig": {
+    "ignore": [
+      "db/*",
+      "src/*"
+    ],
+    "delay": 2500
+  }
 }

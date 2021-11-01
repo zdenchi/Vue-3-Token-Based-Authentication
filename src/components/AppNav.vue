@@ -1,12 +1,29 @@
 <template>
   <div id="nav">
     <router-link to="/"> Home </router-link>
-    <router-link to="/dashboard"> Dashboard </router-link>
+    <router-link to="/dashboard" v-if="!!loggedIn"> Dashboard </router-link>
+
+    <router-link v-if="!loggedIn" class="button" to="/login">Login</router-link>
+    <button v-else class="logoutButton" @click="logoutUser">Logout</button>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapActions } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters(['loggedIn']),
+  },
+  methods: {
+    ...mapActions(['logout']),
+    logoutUser() {
+      this.logout()
+        .then(() => this.$router.push({ name: 'Home' }))
+        .catch((error) => console.log(error));
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
